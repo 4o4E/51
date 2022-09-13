@@ -5,7 +5,7 @@
       "compilerPath": "${workspaceFolder}\\.vscode\\compile.bat",
       "includePath": [
         "${workspaceFolder}/**",
-        "D:/App/Keil/C51/INC/**"
+        "F:/App/Keil/C51/INC/**"
       ],
       "defines": [
         "_DEBUG",
