@@ -307,7 +307,7 @@ void delay(u16 us) {
   }
 }
 
-int press[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static u16 press[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 // 扫描按下的按键并存到数组press中
 void scan() {
@@ -316,96 +316,70 @@ void scan() {
   for (i = 0; i < 16; i++) {
     press[i] = 0;
   }
-  P1 = 0xf7;         // 给第一列赋值0，其余全为1
-  if (P1 != 0xf7) {  // 判断第一列按键是否按下
-    delay(1000);     // 消抖
-    switch (P1) {    // 保存第一列按键按下后的键值
-      case 0x77:
-        press[0] = 1;
-        break;
-      case 0xb7:
-        press[4] = 1;
-        break;
-      case 0xd7:
-        press[8] = 1;
-        break;
-      case 0xe7:
-        press[12] = 1;
-        break;
-    }
-  }
 
-  P1 = 0xfb;         // 给第二列赋值0，其余全为1
-  if (P1 != 0xfb) {  // 判断第二列按键是否按下
-    delay(1000);     // 消抖
-    switch (P1) {    // 保存第二列按键按下后的键值
-      case 0x7b:
-        press[1] = 1;
-        break;
-      case 0xbb:
-        press[5] = 1;
-        break;
-      case 0xdb:
-        press[9] = 1;
-        break;
-      case 0xeb:
-        press[13] = 1;
-        break;
-    }
-  }
+  P1 = 0xf7;          // 1111 0111 给第一列赋值0，其余全为1
+  delay(1000);        // 消抖
+  if (P1 >> 7 & 0x1)  // 0111 0111 0X77
+    press[0] = 1;
+  if (P1 >> 6 & 0x1)  // 1011 0111 0Xb7
+    press[4] = 1;
+  if (P1 >> 5 & 0x1)  // 1101 0111
+    press[8] = 1;
+  if (P1 >> 4 & 0x1)  // 1110 0111
+    press[12] = 1;
 
-  P1 = 0xfd;         // 给第三列赋值0，其余全为1
-  if (P1 != 0xfd) {  // 判断第三列按键是否按下
-    delay(1000);     // 消抖
-    switch (P1) {    // 保存第三列按键按下后的键值
-      case 0x7d:
-        press[2] = 1;
-        break;
-      case 0xbd:
-        press[6] = 1;
-        break;
-      case 0xdd:
-        press[10] = 1;
-        break;
-      case 0xed:
-        press[14] = 1;
-        break;
-    }
-  }
+  P1 = 0xfb;          // 1111 1011 给第二列赋值0，其余全为1
+  delay(1000);        // 消抖
+  if (P1 >> 7 & 0x1)  // 0111 1011
+    press[1] = 1;
+  if (P1 >> 6 & 0x1)  // 1011 1011
+    press[5] = 1;
+  if (P1 >> 5 & 0x1)  // 1101 1011
+    press[9] = 1;
+  if (P1 >> 4 & 0x1)  // 1110 1011
+    press[13] = 1;
 
-  P1 = 0xfe;         // 给第四列赋值0，其余全为1
-  if (P1 != 0xfe) {  // 判断第四列按键是否按下
-    delay(1000);     // 消抖
-    switch (P1) {    // 保存第四列按键按下后的键值
-      case 0x7e:
-        press[3] = 1;
-        break;
-      case 0xbe:
-        press[7] = 1;
-        break;
-      case 0xde:
-        press[11] = 1;
-        break;
-      case 0xee:
-        press[15] = 1;
-        break;
-    }
-  }
+  P1 = 0xfd;          // 1111 1101 给第三列赋值0，其余全为1
+  delay(1000);        // 消抖
+  if (P1 >> 7 & 0x1)  // 0111 1101
+    press[2] = 1;
+  if (P1 >> 6 & 0x1)  // 1011 1101
+    press[6] = 1;
+  if (P1 >> 5 & 0x1)  // 1101 1101
+    press[10] = 1;
+  if (P1 >> 4 & 0x1)  // 1110 1101
+    press[14] = 1;
+
+  P1 = 0xfe;          // 1111 1110 给第四列赋值0，其余全为1
+  delay(1000);        // 消抖
+  if (P1 >> 7 & 0x1)  // 0111 1110
+    press[3] = 1;
+  if (P1 >> 6 & 0x1)  // 1011 1110
+    press[7] = 1;
+  if (P1 >> 5 & 0x1)  // 1101 1110
+    press[11] = 1;
+  if (P1 >> 4 & 0x1)  // 1110 1110
+    press[15] = 1;
 }
 
 int main() {
   int i = 0;
   int count = 0;
   while (1) {
+    scan();
     count = 0;
     for (i = 0; i < 16; i++) {
-      if (press[i]) {
+      if (press[i] == 1) {
         count++;
       }
     }
-    P0 = gsmg_code[i];
-    delay(10000);
+
+    P0 = gsmg_code[16 - count];
+    delay(1000);
+    LED7 = ~LED7;
   }
   return 0;
 }
 ```
+
+### 
