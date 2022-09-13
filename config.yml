@@ -1,0 +1,8 @@
+# keil的bin目录绝对路径
+keil_bin_dir_path: 'D:\App\Keil\C51\BIN'
+# keil输出过滤
+log_filter:
+  - 'C51 COMPILER V[\\d.]+ - SN: [\\dA-Z-]+'
+  - 'COPYRIGHT KEIL ELEKTRONIK GmbH 1987 - 2009\\s+'
+# hex文件名
+target: "main"
