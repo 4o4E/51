@@ -2,7 +2,8 @@
 keil_bin_dir_path: 'F:\App\Keil\C51\BIN'
 # keil输出过滤
 log_filter:
-  - '.{1,2}51 COMPILER V[\d.]+ - SN: [A-Z0-9-]+'
+  - '.*SN: [A-Z0-9-]+'
   - 'COPYRIGHT KEIL ELEKTRONIK .*'
+  - 'OBJECT TO HEX FILE CONVERTER OH51 .*'
 # hex文件名
 target: "main"
