@@ -382,4 +382,59 @@ int main() {
 }
 ```
 
-### 
+### 8x8矩阵流水灯
+
+```c
+#include "reg52.h"
+
+typedef unsigned char u8;
+typedef unsigned int u16;
+
+sbit SRCLK = P3 ^ 6;
+sbit RCLK_ = P3 ^ 5;
+sbit SER = P3 ^ 4;
+
+sbit LED = P2 ^ 0;
+
+u8 buf[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+// 列数据
+u8 col[8] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
+
+void delay(u16 us) {
+  while (us--) {
+  }
+}
+
+void write_(u8 d) {
+  u8 i = 0;
+  for (i = 0; i < 8; i++) {
+    SER = d >> 7;
+    d <<= 1;
+    SRCLK = 0;
+    delay(1);
+    SRCLK = 1;
+    delay(1);
+  }
+  RCLK_ = 0;
+  delay(1);
+  RCLK_ = 1;
+}
+
+int main() {
+  int i = 0, j = 0;
+  while (1) {
+    LED = ~LED;
+    for (i = 0; i < 8; i++) {
+      for (j = 0; j < 8; j++) {
+        P0 = col[i];
+        write_(buf[j]);
+        delay(10000);
+      }
+    }
+  }
+
+  return 0;
+}
+```
+
+### 8x8矩阵

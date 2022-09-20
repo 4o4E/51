@@ -3,83 +3,121 @@
 typedef unsigned char u8;
 typedef unsigned int u16;
 
-u8 gsmg_code[17] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07,
-                    0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71};
+sbit LED0 = P2 ^ 0;
+sbit LED1 = P2 ^ 1;
+sbit LED2 = P2 ^ 2;
+sbit LED3 = P2 ^ 3;
+sbit LED4 = P2 ^ 4;
+sbit LED5 = P2 ^ 5;
+sbit LED6 = P2 ^ 6;
+sbit LED7 = P2 ^ 7;
+
+// 获取将x的第y位
+u8 getBit(u8 x, u8 y) {
+  return (u8)(x >> (7 - y) & 1);
+}
+
+// 将X的第Y位置1
+u8 setBit(u8 x, u8 y) {
+  return x | 1 << (7 - y);
+}
+
+// 将X的第Y位清0
+u8 clrBit(u8 x, u8 y) {
+  return x & ~(1 << (7 - y));
+}
 
 void delay(u16 us) {
   while (us--) {
   }
 }
 
-static u16 press[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+sbit SRCLK = P3 ^ 6;
+sbit RCLK_ = P3 ^ 5;
+sbit SER = P3 ^ 4;
 
-// 扫描按下的按键并存到数组press中
-void scan() {
-  // 初始化数组press
-  int i = 0;
-  for (i = 0; i < 16; i++) {
-    press[i] = 0;
+static u8 line_buf[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+// 列数据
+static u8 col_buf[8] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
+
+void write(u8 d) {
+  u8 i = 0;
+  for (i = 0; i < 8; i++) {
+    SER = d >> 7;
+    d <<= 1;
+    SRCLK = 0;
+    delay(1);
+    SRCLK = 1;
+    delay(1);
   }
+  RCLK_ = 0;
+  delay(1);
+  RCLK_ = 1;
+}
 
-  P1 = 0xf7;          // 1111 0111 给第一列赋值0，其余全为1
-  delay(1000);        // 消抖
-  if (P1 >> 7 & 0x1)  // 0111 0111 0X77
-    press[0] = 1;
-  if (P1 >> 6 & 0x1)  // 1011 0111 0Xb7
-    press[4] = 1;
-  if (P1 >> 5 & 0x1)  // 1101 0111
-    press[8] = 1;
-  if (P1 >> 4 & 0x1)  // 1110 0111
-    press[12] = 1;
+// 每列为一个u8
+static u8 matrix[8] = {0};
 
-  P1 = 0xfb;          // 1111 1011 给第二列赋值0，其余全为1
-  delay(1000);        // 消抖
-  if (P1 >> 7 & 0x1)  // 0111 1011
-    press[1] = 1;
-  if (P1 >> 6 & 0x1)  // 1011 1011
-    press[5] = 1;
-  if (P1 >> 5 & 0x1)  // 1101 1011
-    press[9] = 1;
-  if (P1 >> 4 & 0x1)  // 1110 1011
-    press[13] = 1;
+static u8 col = 0;   // 列号
+static u8 line = 0;  // 行号
+static u8 temp = 0;  // 临时数据
 
-  P1 = 0xfd;          // 1111 1101 给第三列赋值0，其余全为1
-  delay(1000);        // 消抖
-  if (P1 >> 7 & 0x1)  // 0111 1101
-    press[2] = 1;
-  if (P1 >> 6 & 0x1)  // 1011 1101
-    press[6] = 1;
-  if (P1 >> 5 & 0x1)  // 1101 1101
-    press[10] = 1;
-  if (P1 >> 4 & 0x1)  // 1110 1101
-    press[14] = 1;
+// 从矩阵中获取某一位的值
+// 行号和列号都从0开始
+// u8 get_matrix(u8 line, u8 col) {
+//   return getBit(led_data[col], line);
+// }
 
-  P1 = 0xfe;          // 1111 1110 给第四列赋值0，其余全为1
-  delay(1000);        // 消抖
-  if (P1 >> 7 & 0x1)  // 0111 1110
-    press[3] = 1;
-  if (P1 >> 6 & 0x1)  // 1011 1110
-    press[7] = 1;
-  if (P1 >> 5 & 0x1)  // 1101 1110
-    press[11] = 1;
-  if (P1 >> 4 & 0x1)  // 1110 1110
-    press[15] = 1;
+// 设置矩阵中某一位的值
+// 行号和列号都从0开始
+void set_matrix(u8 line, u8 col, u8 value) {
+  if (value == 0)
+    matrix[col] = clrBit(matrix[col], line);
+  else
+    matrix[col] = setBit(matrix[col], line);
+}
+
+// 矩阵全部置零
+void clear_matrix() {
+  for (temp = 0; temp < 8; temp++) {
+    matrix[temp] = 0;
+  }
+}
+
+// 将矩阵的数据更新
+void update_matrix() {
+  for (col = 0; col < 8; col++) {
+    P0 = matrix[col];  // 选择列
+    // 写入此列的数据
+    write(matrix[col]);
+    delay(10);
+  }
 }
 
 int main() {
-  int i = 0;
-  int count = 0;
+  int i = 0, j = 0;
   while (1) {
-    scan();
-    count = 0;
-    for (i = 0; i < 16; i++) {
-      if (press[i] == 1) {
-        count++;
-      }
+    LED0 = ~LED0;
+    // for (i = 0; i < 8; i++) {
+    //   for (j = 0; j < 8; j++) {
+    //     P0 = col_buf[i];
+    //     write(line_buf[j]);
+    //     delay(10000);
+    //   }
+    // }
+    clear_matrix();
+    for (j = 0; j < 8; j++) {
+      set_matrix(0, j, 1);
     }
 
-    P0 = gsmg_code[16 - count];
-    delay(1000);
+    if (getBit(matrix[0], 0) == 1)
+      LED7 = 1;
+    else
+      LED7 = 0;
+
+    update_matrix();
+    delay(100000);
   }
+
   return 0;
 }

@@ -11,7 +11,11 @@
         "reg52.h": "c",
         "intrins.h": "c",
         "UART.h": "c",
-        "REG52.H": "cpp"
+        "REG52.H": "c",
+        "lib.h": "c",
+        "led_matrix.h": "c",
+        "delay.h": "c",
+        "led.h": "c",
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.clang_format_fallbackStyle": "Visual Studio"
