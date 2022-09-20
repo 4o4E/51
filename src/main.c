@@ -36,9 +36,10 @@ sbit SRCLK = P3 ^ 6;
 sbit RCLK_ = P3 ^ 5;
 sbit SER = P3 ^ 4;
 
-static u8 line_buf[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+// 每列对应的二进制
+static u8 lineBuf[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 // 列数据
-static u8 col_buf[8] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
+static u8 colBuf[8] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
 
 void write(u8 d) {
   u8 i = 0;
@@ -70,7 +71,7 @@ static u8 temp = 0;  // 临时数据
 
 // 设置矩阵中某一位的值
 // 行号和列号都从0开始
-void set_matrix(u8 line, u8 col, u8 value) {
+void setMatrix(u8 col, u8 line, u8 value) {
   if (value == 0)
     matrix[col] = clrBit(matrix[col], line);
   else
@@ -78,45 +79,78 @@ void set_matrix(u8 line, u8 col, u8 value) {
 }
 
 // 矩阵全部置零
-void clear_matrix() {
+void clearMatrix() {
   for (temp = 0; temp < 8; temp++) {
     matrix[temp] = 0;
   }
 }
 
 // 将矩阵的数据更新
-void update_matrix() {
+void updateMatrix() {
   for (col = 0; col < 8; col++) {
-    P0 = matrix[col];  // 选择列
+    P0 = colBuf[col];  // 选择列
     // 写入此列的数据
     write(matrix[col]);
-    delay(10);
+    delay(100);
+    write(0x00);
   }
+}
+
+// 方向
+// 0上 1右 2下 3左
+int direction = 0;
+
+// 长度
+int length = 3;
+
+// 3个果实的坐标
+u8 targets[3] = {0};
+
+// 更新果实坐标
+void updateTargets() {
+
+}
+
+// 坐标
+// 第0位: 是否使用, 1为使用
+// 234位: x坐标, 范围0-7
+// 567位: y坐标, 范围0-7
+
+// 从坐标int中取出x坐标(234位)
+u8 getX(u8 location) {
+  return (location >> 4) & 7; // 0111
+}
+
+// 从坐标int中取出y坐标(567位)
+u8 getY(u8 location) {
+  return location & 7; // 0111
+}
+
+// 判断此坐标是否使用
+u8 isUse(u8 location) {
+  return u8 >> 7;
+}
+
+// 设置此坐标为使用
+u8 setUse(u8 location) {
+  return setBit(location, 0);
+}
+
+// 设置此坐标为未使用
+u8 clrUse(u8 location) {
+  return setBit(location, 0);
 }
 
 int main() {
   int i = 0, j = 0;
   while (1) {
-    LED0 = ~LED0;
-    // for (i = 0; i < 8; i++) {
-    //   for (j = 0; j < 8; j++) {
-    //     P0 = col_buf[i];
-    //     write(line_buf[j]);
-    //     delay(10000);
-    //   }
-    // }
-    clear_matrix();
-    for (j = 0; j < 8; j++) {
-      set_matrix(0, j, 1);
+    for (i = 0; i < 8; i++) {
+      clearMatrix();
+      for (j = 0; j < 8; j++) {
+        setMatrix((j + i) % 8, j, 1);
+      }
+      updateMatrix();
     }
-
-    if (getBit(matrix[0], 0) == 1)
-      LED7 = 1;
-    else
-      LED7 = 0;
-
-    update_matrix();
-    delay(100000);
   }
 
   return 0;
