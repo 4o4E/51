@@ -479,9 +479,9 @@ sbit RCLK_ = P3 ^ 5;
 sbit SER = P3 ^ 4;
 
 // 每列对应的二进制
-static u8 line_buf[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+static u8 lineBuf[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 // 列数据
-static u8 col_buf[8] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
+static u8 colBuf[8] = {0x7f, 0xbf, 0xdf, 0xef, 0xf7, 0xfb, 0xfd, 0xfe};
 
 void write(u8 d) {
   u8 i = 0;
@@ -513,7 +513,7 @@ static u8 temp = 0;  // 临时数据
 
 // 设置矩阵中某一位的值
 // 行号和列号都从0开始
-void set_matrix(u8 col, u8 line, u8 value) {
+void setMatrix(u8 col, u8 line, u8 value) {
   if (value == 0)
     matrix[col] = clrBit(matrix[col], line);
   else
@@ -521,16 +521,16 @@ void set_matrix(u8 col, u8 line, u8 value) {
 }
 
 // 矩阵全部置零
-void clear_matrix() {
+void clearMatrix() {
   for (temp = 0; temp < 8; temp++) {
     matrix[temp] = 0;
   }
 }
 
 // 将矩阵的数据更新
-void update_matrix() {
+void updateMatrix() {
   for (col = 0; col < 8; col++) {
-    P0 = col_buf[col];  // 选择列
+    P0 = colBuf[col];  // 选择列
     // 写入此列的数据
     write(matrix[col]);
     delay(100);
@@ -542,11 +542,11 @@ int main() {
   int i = 0, j = 0;
   while (1) {
     for (i = 0; i < 8; i++) {
-      clear_matrix();
+      clearMatrix();
       for (j = 0; j < 8; j++) {
-        set_matrix((j + i) % 8, j, 1);
+        setMatrix((j + i) % 8, j, 1);
       }
-      update_matrix();
+      updateMatrix();
     }
   }
 

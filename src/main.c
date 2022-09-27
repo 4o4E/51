@@ -1,4 +1,5 @@
 #include "reg52.h"
+#include "STDLIB.H"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
@@ -96,6 +97,18 @@ void updateMatrix() {
   }
 }
 
+// 随机数的种子
+int seed = 1000;
+
+// 获取随机数
+int getRandom(int from, int to) {
+  srand(seed);
+  int rand = rand(seed);
+  seed += rand;
+  seed %= 1000;
+  return rand % (to - from) + from;
+}
+
 // 方向
 // 0上 1右 2下 3左
 int direction = 0;
@@ -103,12 +116,13 @@ int direction = 0;
 // 长度
 int length = 3;
 
-// 3个果实的坐标
-u8 targets[3] = {0};
+// 果实的坐标
+u8 target = 0;
 
-// 更新果实坐标
-void updateTargets() {
-
+// 更新目标坐标
+void updateTarget() {
+  setUse(target);
+   
 }
 
 // 坐标
@@ -119,6 +133,11 @@ void updateTargets() {
 // 从坐标int中取出x坐标(234位)
 u8 getX(u8 location) {
   return (location >> 4) & 7; // 0111
+}
+
+// 向坐标int中写入x坐标
+void setX(u8 location, u8 x) {
+  return (location &= ~112) & ((x & 7) << 4);
 }
 
 // 从坐标int中取出y坐标(567位)
@@ -139,6 +158,11 @@ u8 setUse(u8 location) {
 // 设置此坐标为未使用
 u8 clrUse(u8 location) {
   return setBit(location, 0);
+}
+
+// 蛇前进
+void sneakForward() {
+
 }
 
 int main() {
