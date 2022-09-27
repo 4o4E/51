@@ -128,7 +128,7 @@ u8 getY(u8 location) {
 
 // 判断此坐标是否使用
 u8 isUse(u8 location) {
-  return u8 >> 7;
+  return location >> 7;
 }
 
 // 设置此坐标为使用
