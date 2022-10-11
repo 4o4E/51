@@ -216,41 +216,28 @@ void sneakForward() {
   }
 }
 
-int l0 = 0, l1 = 0, l2 = 0, l3 = 0;
+bit l0 = 0, l1 = 0, l2 = 0, l3 = 0;
 
+// 扫描按键确定方向
+// 0上 1右 2下 3左
 void scanDirection() {
-  if (KEY0 == 0) {
-    if (l0 == 0)
-      LED0 = 0;
-    else
-      l0 = 0;
-  } else {
-    if (l0 == 1)
-      LED0 = 1;
+  if (KEY0) {
+    if (l0)
+      direction = 3;
     else
       l0 = 1;
   }
 
-  if (KEY1 == 0) {
-    if (l1 == 0)
-      LED1 = 0;
-    else
-      l1 = 0;
-  } else {
-    if (l1 == 1)
-      LED1 = 1;
+  if (KEY1) {
+    if (l1)
+      direction = 0;
     else
       l1 = 1;
   }
 
-  if (KEY2 == 0) {
-    if (l2 == 0)
-      LED2 = 0;
-    else
-      l2 = 0;
-  } else {
-    if (l2 == 1)
-      LED2 = 1;
+  if (KEY2) {
+    if (l2)
+      direction = 2;
     else
       l2 = 1;
   }
@@ -266,6 +253,7 @@ void scanDirection() {
     else
       l3 = 1;
   }
+  delay(500);
 }
 
 int main() {
