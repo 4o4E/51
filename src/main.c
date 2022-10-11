@@ -115,7 +115,7 @@ int getRandom(int from, int to) {
 }
 
 // 方向
-// 0上 1右 2下 3左
+// 0左 1上 2下 3右
 int direction = 0;
 
 // 长度
@@ -188,20 +188,20 @@ void sneakForward() {
         length++;
       }
 
-      // 0上 1右 2下 3左
+      // 0左 1上 2下 3右
       switch (direction) {
         case 0:
-          y--;
-          y %= 8;
+          x--;
+          x %= 8;
           break;
         case 1:
-          x++;
-          x %= 8;
-        case 2:
           y++;
           y %= 8;
+        case 2:
+          y--;
+          y %= 8;
         default:
-          x--;
+          x++;
           x %= 8;
       }
       lt = setX(lt, x);
@@ -219,41 +219,45 @@ void sneakForward() {
 bit l0 = 0, l1 = 0, l2 = 0, l3 = 0;
 
 // 扫描按键确定方向
-// 0上 1右 2下 3左
 void scanDirection() {
+  sacn();
+  delay(500);
+  sacn();
+}
+
+// 0左 1上 2下 3右
+void scan() {
+  // 左
   if (KEY0) {
     if (l0)
-      direction = 3;
-    else
-      l0 = 1;
-  }
-
-  if (KEY1) {
-    if (l1)
       direction = 0;
     else
-      l1 = 1;
+      l0 = 1;
+    return;
   }
-
+  // 上
+  if (KEY1) {
+    if (l1)
+      direction = 1;
+    else
+      l1 = 1;
+    return;
+  }
+  // 下
   if (KEY2) {
     if (l2)
       direction = 2;
     else
       l2 = 1;
+    return;
   }
-
-  if (KEY3 == 0) {
-    if (l3 == 0)
-      LED3 = 0;
-    else
-      l3 = 0;
-  } else {
-    if (l3 == 1)
-      LED3 = 1;
+  // 右
+  if (KEY3) {
+    if (l3)
+      direction = 3;
     else
       l3 = 1;
   }
-  delay(500);
 }
 
 int main() {
