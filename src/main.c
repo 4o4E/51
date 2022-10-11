@@ -1,8 +1,13 @@
-#include "reg52.h"
 #include "STDLIB.H"
+#include "reg52.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
+
+sbit KEY0 = P3 ^ 1;
+sbit KEY1 = P3 ^ 0;
+sbit KEY2 = P3 ^ 2;
+sbit KEY3 = P3 ^ 3;
 
 sbit LED0 = P2 ^ 0;
 sbit LED1 = P2 ^ 1;
@@ -72,7 +77,7 @@ static u8 temp = 0;  // 临时数据
 
 // 设置矩阵中某一位的值
 // 行号和列号都从0开始
-void setMatrix(u8 col, u8 line, u8 value) {
+void setMatrix(u8 col, u8 line, bit value) {
   if (value == 0)
     matrix[col] = clrBit(matrix[col], line);
   else
@@ -98,15 +103,15 @@ void updateMatrix() {
 }
 
 // 随机数的种子
-int seed = 1000;
+int seed = 1000, r = 0;
 
 // 获取随机数
 int getRandom(int from, int to) {
   srand(seed);
-  int rand = rand(seed);
-  seed += rand;
+  r = rand();
+  seed += r;
   seed %= 1000;
-  return rand % (to - from) + from;
+  return r % (to - from) + from;
 }
 
 // 方向
@@ -119,12 +124,6 @@ int length = 3;
 // 果实的坐标
 u8 target = 0;
 
-// 更新目标坐标
-void updateTarget() {
-  setUse(target);
-   
-}
-
 // 坐标
 // 第0位: 是否使用, 1为使用
 // 234位: x坐标, 范围0-7
@@ -132,17 +131,22 @@ void updateTarget() {
 
 // 从坐标int中取出x坐标(234位)
 u8 getX(u8 location) {
-  return (location >> 4) & 7; // 0111
+  return (location >> 4) & 0x01110000;  // 0111
 }
 
 // 向坐标int中写入x坐标
-void setX(u8 location, u8 x) {
-  return (location &= ~112) & ((x & 7) << 4);
+u8 setX(u8 location, u8 x) {
+  return (u8)((location & 0x10001111) & ((x & 0x00000111) << 4));
 }
 
 // 从坐标int中取出y坐标(567位)
 u8 getY(u8 location) {
-  return location & 7; // 0111
+  return location & 0x00001110;
+}
+
+// 向坐标int中写入y坐标
+u8 setY(u8 location, u8 y) {
+  return (u8)((location & 0x111110001) & ((y & 0x00000111) << 1));
 }
 
 // 判断此坐标是否使用
@@ -160,16 +164,120 @@ u8 clrUse(u8 location) {
   return setBit(location, 0);
 }
 
+// 更新果实坐标
+void updateTarget() {
+  setUse(target);
+  setX(target, (u8)getRandom(0, 15));
+  setY(target, (u8)getRandom(0, 15));
+}
+
+u8 body[64] = {0};
+
+int t, lt, last, l, x, y;
+
 // 蛇前进
 void sneakForward() {
+  for (t = 0; i < length; i++) {
+    // 首个
+    if (t == 0) {
+      last = lt = body[t];
+      x = getX(lt);
+      y = getY(lt);
+      // 判断是否吃到果实
+      if (getX(target) == x && getY(target) == y) {
+        length++;
+      }
 
+      // 0上 1右 2下 3左
+      switch (direction) {
+        case 0:
+          y--;
+          y %= 8;
+          break;
+        case 1:
+          x++;
+          x %= 8;
+        case 2:
+          y++;
+          y %= 8;
+        default:
+          x--;
+          x %= 8;
+      }
+      lt = setX(lt, x);
+      lt = setY(lt, y);
+      body[0] = lt;
+      continue;
+    }
+    // 其他
+    lt = body[t];
+    body[t] = last;
+    last = lt;
+  }
+}
+
+int l0 = 0, l1 = 0, l2 = 0, l3 = 0;
+
+void scanDirection() {
+  if (KEY0 == 0) {
+    if (l0 == 0)
+      LED0 = 0;
+    else
+      l0 = 0;
+  } else {
+    if (l0 == 1)
+      LED0 = 1;
+    else
+      l0 = 1;
+  }
+
+  if (KEY1 == 0) {
+    if (l1 == 0)
+      LED1 = 0;
+    else
+      l1 = 0;
+  } else {
+    if (l1 == 1)
+      LED1 = 1;
+    else
+      l1 = 1;
+  }
+
+  if (KEY2 == 0) {
+    if (l2 == 0)
+      LED2 = 0;
+    else
+      l2 = 0;
+  } else {
+    if (l2 == 1)
+      LED2 = 1;
+    else
+      l2 = 1;
+  }
+
+  if (KEY3 == 0) {
+    if (l3 == 0)
+      LED3 = 0;
+    else
+      l3 = 0;
+  } else {
+    if (l3 == 1)
+      LED3 = 1;
+    else
+      l3 = 1;
+  }
 }
 
 int main() {
   int i = 0, j = 0;
   while (1) {
+    seed++;
+    seed %= 1000;
     for (i = 0; i < 8; i++) {
-      clearMatrix();
+      clearMatrix();  // 清空矩阵
+      if (~isUse(target))
+        updateTarget();  // 若未设置目标, 则重新设置
+      setMatrix(getX(target), getY(target));  // 点亮果实位置
       for (j = 0; j < 8; j++) {
         setMatrix((j + i) % 8, j, 1);
       }
