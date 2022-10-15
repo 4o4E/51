@@ -1,25 +1,20 @@
 ### 流水灯
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned long int u16;
 
-void delay(u16 us)
-{
-  while (us--)
-  {
+void delay(u16 us) {
+  while (us--) {
   }
 }
 
-int main()
-{
+int main() {
   int i;
 
-  while (1)
-  {
-    for (i = 0; i < 8; i++)
-    {
+  while (1) {
+    for (i = 0; i < 8; i++) {
       P2 = ~(0x01 << i);
     }
   }
@@ -31,7 +26,7 @@ int main()
 ### 蜂鸣器
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 // 蜂鸣持续时长
 #define DURATION 100
@@ -44,20 +39,15 @@ typedef unsigned int u16;
 
 sbit BEEP = P2 ^ 5;
 
-void delay(u16 us)
-{
-    while (us--)
-    {
+void delay(u16 us) {
+    while (us--) {
     }
 }
 
-int main()
-{
+int main() {
     u16 i = DURATION;
-    while (1)
-    {
-        while (i--)
-        {
+    while (1) {
+        while (i--) {
             BEEP = 0;
             delay(AT - HT);
             BEEP = 1;
@@ -73,7 +63,7 @@ int main()
 ### 静态数码管
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
@@ -96,20 +86,15 @@ u8 gsmg_code[17] = {
     0x79,
     0x71};
 
-void delay(u16 us)
-{
-  while (us--)
-  {
+void delay(u16 us) {
+  while (us--) {
   }
 }
 
-int main()
-{
+int main() {
   int i;
-  while (1)
-  {
-    for (i = 0; i < 17; i++)
-    {
+  while (1) {
+    for (i = 0; i < 17; i++) {
       P0 = gsmg_code[i];
       delay(10000);
     }
@@ -121,7 +106,7 @@ int main()
 ### 动态数码管
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
@@ -148,21 +133,16 @@ u8 gsmg_code[17] = {
     0x79,
     0x71};
 
-void delay(u16 us)
-{
-  while (us--)
-  {
+void delay(u16 us) {
+  while (us--) {
   }
 }
 
-void smg_display()
-{
+void smg_display() {
   u8 i = 0;
-  for (i = 0; i < 8; i++)
-  {
+  for (i = 0; i < 8; i++) {
     // 设置数码管位数
-    switch (i)
-    {
+    switch (i) {
       case 0: LSC = 1; LSB = 1; LSA = 1; break;
       case 1: LSC = 1; LSB = 1; LSA = 0; break;
       case 2: LSC = 1; LSB = 0; LSA = 1; break;
@@ -178,10 +158,8 @@ void smg_display()
   }
 }
 
-int main()
-{
-  while (1)
-  {
+int main() {
+  while (1) {
     smg_display();
   }
   return 0;
@@ -191,7 +169,7 @@ int main()
 ### 独立按键
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
@@ -208,76 +186,64 @@ sbit LED3 = P2 ^ 3;
 
 sbit LED7 = P2 ^ 7;
 
-void delay(u16 us)
-{
-  while (us--)
-  {
+void delay(u16 us) {
+  while (us--) {
   }
 }
 
-int main()
-{
+int main() {
   int l0 = 0,
       l1 = 0,
       l2 = 0,
       l3 = 0;
 
-  while (1)
-  {
-    if (KEY0 == 0)
-    {
+  while (1) {
+    if (KEY0 == 0) {
       if (l0 == 0)
         LED0 = 0;
       else
         l0 = 0;
     }
-    else
-    {
+    else {
       if (l0 == 1)
         LED0 = 1;
       else
         l0 = 1;
     }
 
-    if (KEY1 == 0)
-    {
+    if (KEY1 == 0) {
       if (l1 == 0)
         LED1 = 0;
       else
         l1 = 0;
     }
-    else
-    {
+    else {
       if (l1 == 1)
         LED1 = 1;
       else
         l1 = 1;
     }
     
-    if (KEY2 == 0)
-    {
+    if (KEY2 == 0) {
       if (l2 == 0)
         LED2 = 0;
       else
         l2 = 0;
     }
-    else
-    {
+    else {
       if (l2 == 1)
         LED2 = 1;
       else
         l2 = 1;
     }
     
-    if (KEY3 == 0)
-    {
+    if (KEY3 == 0) {
       if (l3 == 0)
         LED3 = 0;
       else
         l3 = 0;
     }
-    else
-    {
+    else {
       if (l3 == 1)
         LED3 = 1;
       else
@@ -294,7 +260,7 @@ int main()
 ### 矩阵按键
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
@@ -385,7 +351,7 @@ int main() {
 ### 8x8矩阵流水灯
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
@@ -440,7 +406,7 @@ int main() {
 ### 8x8矩阵动态
 
 ```c
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;

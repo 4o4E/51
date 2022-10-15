@@ -1,5 +1,5 @@
 #include "STDLIB.H"
-#include "reg52.h"
+#include "reg51.h"
 
 typedef unsigned char u8;
 typedef unsigned int u16;
