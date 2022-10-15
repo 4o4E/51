@@ -16,6 +16,7 @@ int main() {
   while (1) {
     for (i = 0; i < 8; i++) {
       P2 = ~(0x01 << i);
+      delay(1000);
     }
   }
 
