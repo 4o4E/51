@@ -2,7 +2,6 @@
   "configurations": [
     {
       "name": "Keil",
-      "compilerPath": "${workspaceFolder}\\.vscode\\compile.bat",
       "includePath": [
         "${workspaceFolder}/**",
         "F:/App/Keil/C51/INC/**"
@@ -21,6 +20,7 @@
         "xdata=/**/",
         "code=/**/",
         "sbit=/**/",
+        "bit=/**/",
         "at=/**/",
         "interrupt=/**/"
       ],
