@@ -16,6 +16,8 @@
         "led_matrix.h": "c",
         "delay.h": "c",
         "led.h": "c",
+        "reg51.h": "c",
+        "REG51.H": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.clang_format_fallbackStyle": "Visual Studio"
