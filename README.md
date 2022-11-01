@@ -305,6 +305,98 @@ int main() {
 }
 ```
 
+### 独立按键 & LED灯作业
+
+```c
+#include "intrins.h"
+#include "reg51.h"
+
+typedef unsigned char u8;
+typedef unsigned int u16;
+
+sbit KEY0 = P3 ^ 1;
+sbit KEY1 = P3 ^ 0;
+sbit KEY2 = P3 ^ 2;
+sbit KEY3 = P3 ^ 3;
+
+void delay(u16 us) {
+  while (us--) {
+  }
+}
+
+// 状态
+// 0 循环左移
+// 1 循环右移
+// 2 奇偶闪烁
+// 3 灯灭
+int state = 3, change = 0, tmp = 0;
+
+int main() {
+  int l0 = 0, l1 = 0, l2 = 0, l3 = 0;
+
+  while (1) {
+    if (KEY0 == 0) {
+      if (l0 == 0)
+        state = 0, change = 1;
+      else
+        l0 = 0;
+      goto sign;
+    }
+
+    if (KEY1 == 0) {
+      if (l1 == 0)
+        state = 1, change = 1;
+      else
+        l1 = 0;
+      goto sign;
+    }
+
+    if (KEY2 == 0) {
+      if (l2 == 0)
+        state = 2, change = 1;
+      else
+        l2 = 0;
+      goto sign;
+    }
+
+    if (KEY3 == 0) {
+      if (l3 == 0)
+        state = 3, change = 1;
+      else
+        l3 = 0;
+      goto sign;
+    }
+  sign:;
+    if (++tmp >= 20) {
+      tmp = 0;
+      switch (state) {
+        case 0:  // 循环左
+          if (change)
+            P2 = 0x0FE, change = 0;
+          P2 = _cror_(P2, 1);
+          break;
+        case 1:
+          if (change)
+            P2 = 0xFE, change = 0;
+          P2 = _crol_(P2, 1);
+          break;
+        case 2:
+          if (change)
+            P2 = 0xAA, change = 0;
+          P2 = _cror_(P2, 1);
+          break;
+        case 3:
+          P2 = 0xFF, change = 0;
+          break;
+      }
+    }
+    delay(500);
+  }
+
+  return 0;
+}
+```
+
 ### 矩阵按键
 
 ```c
