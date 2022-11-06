@@ -1,5 +1,7 @@
 ### 流水灯
 
+LED亮起一盏从左至右循环闪烁
+
 <details>
   <summary>点击查看代码</summary>
 
@@ -30,6 +32,11 @@ int main() {
 </details>
 
 ### 流水灯作业
+
+1. 向右循环闪烁
+2. 向左循环闪烁
+3. 奇偶闪烁
+4. 从中间向两边扩散
 
 <details>
   <summary>点击查看代码</summary>
@@ -83,6 +90,8 @@ int main() {
 
 ### 蜂鸣器
 
+响一下
+
 <details>
   <summary>点击查看代码</summary>
 
@@ -124,6 +133,8 @@ int main() {
 </details>
 
 ### 静态数码管
+
+数码管第一位循环显示0-f
 
 <details>
   <summary>点击查看代码</summary>
@@ -172,6 +183,8 @@ int main() {
 </details>
 
 ### 动态数码管
+
+数码管显示`01234567`
 
 <details>
   <summary>点击查看代码</summary>
@@ -240,6 +253,8 @@ int main() {
 </details>
 
 ### 数码管作业
+
+按下独立按键第一位显示6, 松开显示8
 
 <details>
   <summary>点击查看代码</summary>
@@ -319,6 +334,8 @@ int main() {
 </details>
 
 ### 独立按键
+
+按下独立按键亮起对应led, 支持多按键检测
 
 <details>
   <summary>点击查看代码</summary>
@@ -415,6 +432,11 @@ int main() {
 </details>
 
 ### 独立按键 & LED灯作业
+
+1. 按下第1个按键切换LED循环左移
+2. 按下第2个按键切换LED循环右移
+3. 按下第3个按键切换LED奇偶闪烁
+4. 按下第4个按键切换LED关闭
 
 <details>
   <summary>点击查看代码</summary>
@@ -513,6 +535,8 @@ int main() {
 
 ### 矩阵按键
 
+按下几个矩阵按键, LED屏就显示几(0-f)
+
 <details>
   <summary>点击查看代码</summary>
 
@@ -599,7 +623,6 @@ int main() {
 
     P0 = gsmg_code[16 - count];
     delay(1000);
-    LED7 = ~LED7;
   }
   return 0;
 }
@@ -608,6 +631,8 @@ int main() {
 </details>
 
 ### 8x8矩阵流水灯
+
+LED矩阵从左至右从上到下亮起一盏循环闪烁
 
 <details>
   <summary>点击查看代码</summary>
@@ -668,6 +693,8 @@ int main() {
 </details>
 
 ### 8x8矩阵动态
+
+LED矩阵斜向循环闪烁
 
 <details>
   <summary>点击查看代码</summary>
@@ -790,6 +817,8 @@ int main() {
 </details>
 
 ### 贪吃蛇 未完成
+
+小demo, 未完成
 
 <details>
   <summary>点击查看代码</summary>
