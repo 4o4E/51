@@ -337,6 +337,9 @@ int main() {
 
 全部数码管循环显示`2`, `4`, `6`, `8`
 
+<details>
+  <summary>点击查看代码</summary>
+
 ```c
 #include "reg51.h"
 
@@ -398,6 +401,8 @@ int main() {
   return 0;
 }
 ```
+
+</details>
 
 ### 独立按键
 
