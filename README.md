@@ -1,5 +1,8 @@
 ### 流水灯
 
+<details>
+  <summary>点击查看代码</summary>
+
 ```c
 #include "reg51.h"
 
@@ -24,7 +27,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 流水灯作业
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "STDLIB.H"
@@ -71,7 +79,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 蜂鸣器
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -108,7 +121,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 静态数码管
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -151,7 +169,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 动态数码管
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -214,7 +237,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 数码管作业
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -288,7 +316,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 独立按键
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -379,7 +412,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 独立按键 & LED灯作业
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "intrins.h"
@@ -471,7 +509,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 矩阵按键
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -562,7 +605,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 8x8矩阵流水灯
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -617,7 +665,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 8x8矩阵动态
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "reg51.h"
@@ -734,7 +787,12 @@ int main() {
 }
 ```
 
+</details>
+
 ### 贪吃蛇 未完成
+
+<details>
+  <summary>点击查看代码</summary>
 
 ```c
 #include "STDLIB.H"
@@ -1017,5 +1075,7 @@ int main() {
   return 0;
 }
 ```
+
+</details>
 
 ### 
