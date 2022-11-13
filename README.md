@@ -1178,4 +1178,55 @@ int main() {
 
 </details>
 
-### 
+### 中断作业
+
+利用外部中断按键 S1 控制 P2 口 8 个 LED 灯，中断时使 8 个 LED 灯闪 烁 10 次
+
+<details>
+  <summary>点击查看代码</summary>
+
+```c
+#include "reg51.h"
+
+typedef unsigned char u8;
+typedef unsigned int u16;
+
+sbit KEY3 = P3 ^ 2;
+sbit KEY4 = P3 ^ 3;
+sbit LED0 = P2 ^ 0;
+sbit LED1 = P2 ^ 1;
+
+void delay(u16 us) {
+  while (us--) {
+  }
+}
+
+void init0() {
+  IT0 = 1;
+  EX0 = 1;
+  EA = 1;
+}
+
+static int i;
+
+void exti0() interrupt 0 {
+  delay(1000);
+  if (KEY3 == 0) {
+    for (i = 0; i < 10; i++)
+    {
+      P2 = 0;
+      delay(10000);
+      P2 = 0xff;
+      delay(10000);
+    }
+  }
+}
+
+int main() {
+  init0();
+  while(1);
+  return 0;
+}
+```
+
+</details>
