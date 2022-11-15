@@ -1,6 +1,6 @@
 ### 流水灯
 
-LED亮起一盏从左至右循环闪烁
+> LED亮起一盏从左至右循环闪烁
 
 <details>
   <summary>点击查看代码</summary>
@@ -33,10 +33,10 @@ int main() {
 
 ### 流水灯作业
 
-1. 向右循环闪烁
-2. 向左循环闪烁
-3. 奇偶闪烁
-4. 从中间向两边扩散
+> 1. 向右循环闪烁
+> 2. 向左循环闪烁
+> 3. 奇偶闪烁
+> 4. 从中间向两边扩散
 
 <details>
   <summary>点击查看代码</summary>
@@ -90,7 +90,7 @@ int main() {
 
 ### 蜂鸣器
 
-响一下
+> 响一下
 
 <details>
   <summary>点击查看代码</summary>
@@ -134,7 +134,7 @@ int main() {
 
 ### 静态数码管
 
-数码管第一位循环显示0-f
+> 数码管第一位循环显示0-f
 
 <details>
   <summary>点击查看代码</summary>
@@ -184,7 +184,7 @@ int main() {
 
 ### 动态数码管
 
-数码管显示`01234567`
+> 数码管显示`01234567`
 
 <details>
   <summary>点击查看代码</summary>
@@ -227,14 +227,30 @@ void smg_display() {
   for (i = 0; i < 8; i++) {
     // 设置数码管位数
     switch (i) {
-      case 0: LSC = 1; LSB = 1; LSA = 1; break;
-      case 1: LSC = 1; LSB = 1; LSA = 0; break;
-      case 2: LSC = 1; LSB = 0; LSA = 1; break;
-      case 3: LSC = 1; LSB = 0; LSA = 0; break;
-      case 4: LSC = 0; LSB = 1; LSA = 1; break;
-      case 5: LSC = 0; LSB = 1; LSA = 0; break;
-      case 6: LSC = 0; LSB = 0; LSA = 1; break;
-      case 7: LSC = 0; LSB = 0; LSA = 0; break;
+      case 0:
+        LSC = 1, LSB = 1, LSA = 1;
+        break;
+      case 1:
+        LSC = 1, LSB = 1, LSA = 0;
+        break;
+      case 2:
+        LSC = 1, LSB = 0, LSA = 1;
+        break;
+      case 3:
+        LSC = 1, LSB = 0, LSA = 0;
+        break;
+      case 4:
+        LSC = 0, LSB = 1, LSA = 1;
+        break;
+      case 5:
+        LSC = 0, LSB = 1, LSA = 0;
+        break;
+      case 6:
+        LSC = 0, LSB = 0, LSA = 1;
+        break;
+      case 7:
+        LSC = 0, LSB = 0, LSA = 0;
+        break;
     }
     // 设置显示
     P0 = gsmg_code[i];
@@ -254,7 +270,7 @@ int main() {
 
 ### 数码管作业1
 
-按下独立按键第一位显示6, 松开显示8
+> 按下独立按键第一位显示6, 松开显示8
 
 <details>
   <summary>点击查看代码</summary>
@@ -335,7 +351,7 @@ int main() {
 
 ### 数码管作业2
 
-全部数码管循环显示`2`, `4`, `6`, `8`
+> 全部数码管循环显示`2`, `4`, `6`, `8`
 
 <details>
   <summary>点击查看代码</summary>
@@ -406,7 +422,7 @@ int main() {
 
 ### 独立按键
 
-按下独立按键亮起对应led, 支持多按键检测
+> 按下独立按键亮起对应led, 支持多按键检测
 
 <details>
   <summary>点击查看代码</summary>
@@ -504,10 +520,10 @@ int main() {
 
 ### 独立按键 & LED灯作业
 
-1. 按下第1个按键切换LED循环左移
-2. 按下第2个按键切换LED循环右移
-3. 按下第3个按键切换LED奇偶闪烁
-4. 按下第4个按键切换LED关闭
+> 1. 按下第1个按键切换LED循环左移
+> 2. 按下第2个按键切换LED循环右移
+> 3. 按下第3个按键切换LED奇偶闪烁
+> 4. 按下第4个按键切换LED关闭
 
 <details>
   <summary>点击查看代码</summary>
@@ -606,7 +622,7 @@ int main() {
 
 ### 矩阵按键
 
-按下几个矩阵按键, LED屏就显示几(0-f)
+> 按下几个矩阵按键, LED屏就显示几(0-f)
 
 <details>
   <summary>点击查看代码</summary>
@@ -703,7 +719,7 @@ int main() {
 
 ### 8x8矩阵流水灯
 
-LED矩阵从左至右从上到下亮起一盏循环闪烁
+> LED矩阵从左至右从上到下亮起一盏循环闪烁
 
 <details>
   <summary>点击查看代码</summary>
@@ -765,7 +781,7 @@ int main() {
 
 ### 8x8矩阵动态
 
-LED矩阵斜向循环闪烁
+> LED矩阵斜向循环闪烁
 
 <details>
   <summary>点击查看代码</summary>
@@ -889,7 +905,7 @@ int main() {
 
 ### 贪吃蛇 未完成
 
-小demo, 未完成
+> 小demo, 未完成
 
 <details>
   <summary>点击查看代码</summary>
@@ -1180,7 +1196,7 @@ int main() {
 
 ### 中断作业
 
-利用外部中断按键 S1 控制 P2 口 8 个 LED 灯，中断时使 8 个 LED 灯闪 烁 10 次
+> 利用外部中断按键 S1 控制 P2 口 8 个 LED 灯，中断时使 8 个 LED 灯闪 烁 10 次
 
 <details>
   <summary>点击查看代码</summary>
@@ -1225,6 +1241,125 @@ void exti0() interrupt 0 {
 int main() {
   init0();
   while(1);
+  return 0;
+}
+```
+
+</details>
+
+### 中断作业2
+
+> 使用外部中断0和外部中断1，按键接单片机的P3.2和P3.3引脚（下降沿有效），当响应外部中断0时，驱动4位集成的数码管动态扫描方法显示1 4 9 2（循环5次），当响应外部中断1时，驱动8只LED灯奇数灯与偶数灯交叉闪烁（循环5次）
+
+<details>
+  <summary>点击查看代码</summary>
+
+```c
+#include "reg51.h"
+
+typedef unsigned char u8;
+typedef unsigned int u16;
+
+sbit KEY3 = P3 ^ 2;
+sbit KEY4 = P3 ^ 3;
+sbit LED0 = P2 ^ 0;
+sbit LED1 = P2 ^ 1;
+
+sbit LSA = P2 ^ 2;
+sbit LSB = P2 ^ 3;
+sbit LSC = P2 ^ 4;
+
+void delay(u16 us) {
+  while (us--) {
+  }
+}
+
+void init0() {
+  IT0 = 1;
+  EX0 = 1;
+  EA = 1;
+}
+
+void init1() {
+  IT1 = 1;
+  EX1 = 1;
+  EA = 1;
+}
+
+static int i, j, k;
+
+int arr1492[] = {0x06, 0x66, 0x6f, 0x5b};
+
+// 数码管动态扫描方法显示 1 4 9 2（循环5次）
+void exti0() interrupt 0 {
+  if (KEY3 != 0)
+    return;
+  for (j = 0; j < 5; j++) {
+    for (k = 0; k < 500; k++) {
+      for (i = 0; i < 4; i++) {
+        // 设置数码管位数
+        switch (i) {
+          case 0:
+            LSC = 1, LSB = 1, LSA = 1;
+            break;
+          case 1:
+            LSC = 1, LSB = 1, LSA = 0;
+            break;
+          case 2:
+            LSC = 1, LSB = 0, LSA = 1;
+            break;
+          case 3:
+            LSC = 1, LSB = 0, LSA = 0;
+            break;
+        }
+        // 设置显示
+        P0 = arr1492[i];
+        delay(10);
+      }
+    }
+    for (i = 0; i < 4; i++) {
+      // 设置数码管位数
+      switch (i) {
+        case 0:
+          LSC = 1, LSB = 1, LSA = 1;
+          break;
+        case 1:
+          LSC = 1, LSB = 1, LSA = 0;
+          break;
+        case 2:
+          LSC = 1, LSB = 0, LSA = 1;
+          break;
+        case 3:
+          LSC = 1, LSB = 0, LSA = 0;
+          break;
+      }
+      // 设置显示
+      P0 = 0;
+      delay(10);
+    }
+    delay(500000);
+  }
+}
+
+// 驱动8只LED灯奇数灯与偶数灯交叉闪烁（循环5次）
+void exti1() interrupt 2 {
+  delay(1000);
+  if (KEY4 != 0)
+    return;
+  for (i = 0; i < 5; i++) {
+    P2 = 85;
+    delay(20000);
+    P2 = ~P2;
+    delay(20000);
+  }
+  P2 = 0xff;
+}
+
+int main() {
+  init0();
+  init1();
+  while (1) {
+  }
   return 0;
 }
 ```
