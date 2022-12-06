@@ -110,23 +110,23 @@ typedef unsigned int u16;
 sbit BEEP = P2 ^ 5;
 
 void delay(u16 us) {
-    while (us--) {
-    }
+  while (us--) {
+  }
 }
 
 int main() {
-    u16 i = DURATION;
-    while (1) {
-        while (i--) {
-            BEEP = 0;
-            delay(AT - HT);
-            BEEP = 1;
-            delay(HT);
-        }
-        i = 0;
-        BEEP = 0;
+  u16 i = DURATION;
+  while (1) {
+    while (i--) {
+      BEEP = 0;
+      delay(AT - HT);
+      BEEP = 1;
+      delay(HT);
     }
-    return 0;
+    i = 0;
+    BEEP = 0;
+  }
+  return 0;
 }
 ```
 
@@ -1401,6 +1401,50 @@ void exti0() interrupt 1 {
 
 int main() {
   init0();
+  while (1) {
+  }
+  return 0;
+}
+```
+
+</details>
+
+### 定时器作业2
+
+> 已知系统晶振12MHz，采用定时器T0的工作方式1实现延时，控制P2口的8只发光二极管以50ms的间隔循环点亮。
+
+<details>
+  <summary>点击查看代码</summary>
+
+```c
+#include "intrins.h"
+#include "reg51.h"
+
+typedef unsigned char u8;
+typedef unsigned int u16;
+
+void init0() {
+  TMOD |= 0X01;            // 选择为定时器0模式 工作方式1
+  TH0 = 0XFC, TL0 = 0X18;  // 给定时器赋初值 定时1ms
+  ET0 = 1;                 // 打开定时器0中断允许
+  EA = 1;                  // 打开总中断
+  TR0 = 1;                 // 打开定时器
+}
+
+u8 i;  //定义静态变量i
+
+void exti0() interrupt 1 {
+  TH0 = 0XFC, TL0 = 0X18;  // 给定时器赋初值，定时1ms
+  i++;
+  if (i == 50) {
+    i = 0;
+    P2 = _crol_(P2, 1);
+  }
+}
+
+int main() {
+  init0();
+  P2 = 0xfe;
   while (1) {
   }
   return 0;
